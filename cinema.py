@@ -1,3 +1,5 @@
+#fazer leitura de csvs avaliacoes e filmes para poder ser usada na tabela
+
 def cria_filme():
   """
   Pede ao usuário as informações de um novo filme e retorna em um dicionário com os dados.
@@ -9,10 +11,11 @@ def cria_filme():
 ******* Cadastrando Filme *******
 *********************************
 """)
+  #nessa função os dados add aqui serao add nas suas respectivas tabelas de avaliacoes como filmes
   filme = {}
-  filme["Título"] = input("Título: ").strip()
-  filme["Ano"] = int(input("Ano: ").strip())
-  filme["Gênero"] = input("Gênero: ").strip()
+  filme["Título"] = input("titulo: ").strip()
+  filme["Ano"] = int(input("ano: ").strip())
+  filme["Gênero"] = input("genero: ").strip()
   filme["Estrelas"] = 0.0
   filme["numero de avaliações"] = 0
   print("\n[**Tecle enter para voltar ao Menu Principal**]")
@@ -26,11 +29,12 @@ def mostra_filme(filme):
   Parâmetros:
   filme (dict): Dicionário contendo as informações de um filme.
   """
-  print(f"Título: {filme['Título']}")
-  print(f"Ano: {filme['Ano']}")
-  print(f"Gênero: {filme['Gênero']}")
-  print(f"Estrelas: {filme['Estrelas']}")
-  print(f"Número de avaliações: {filme['Avaliações']}")
+  #fazer um print que mostre as colunas da tabela filmes, sendo as colunas titulo ano e genero
+  print(f"Título: {filme['titulo']}")
+  print(f"Ano: {filme['ano']}")
+  print(f"Gênero: {filme['genero']}")
+  print(f"Estrelas: {filme['estrelas']}")
+  print(f"Número de avaliações: {filme['avaliacoes']}")
   print("\n*********************************")
 def lista_todos(filmes):
   """
@@ -55,7 +59,7 @@ def lista_todos(filmes):
 def lista_genero(genero, filmes):
   """
   Exibe os filmes do gênero definido pelo usuário.
-
+  #ler a tabela filmes, especificamente coluna genero
   Parâmetros:
   genero (str): Gênero a ser buscado.
   filmes (list): Lista de filmes cadastrados.
@@ -70,7 +74,7 @@ def lista_genero(genero, filmes):
       mostra_filme(filme)
       encontrado = True
 
-    if not encontrado:
+    else:
       print("Nenhum filme encontrado com esse gênero.")
 
   print("[**Tecle enter para voltar ao Menu Principal**]")
@@ -79,6 +83,8 @@ def lista_genero(genero, filmes):
 def lista_estrelas(min_estrelas, filmes):
   """
   Exibe os filmes com estrelas maiores ou iguais ao valor informado.
+#na tabela avaliações tem duas colunas filme e avaliação entao aqui usaria somente avaliação
+#talvez colocar um sistema que mostra as estrelas sem ser em numero
 
   Parâmetros:
   min_estrelas (float): Valor mínimo de estrelas.
