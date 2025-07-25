@@ -1,4 +1,3 @@
-#fazer leitura de csvs avaliacoes e filmes para poder ser usada na tabela
 import pandas as pad
 import os
 
@@ -6,9 +5,9 @@ import os
 sequencias = []
 
 
-avaliacoes = r"avaliacoes.csv"
+avaliacoes_caminho = r"avaliacoes.csv"
 colunas_avaliacoes = ['Título', 'Estrelas', 'Número avaliações']
-filmes = r"filmes.csv"
+filmes_caminho = r"filmes.csv"
 lista_colunas = ['Título', 'Ano', 'Gênero']
 
 def mostra_menu(total):
@@ -50,10 +49,10 @@ def cadastrar_filme(filmes_carregados, avaliacoes_carregadas):  # Agora recebe o
   novo_filme_estrela['Número avaliações'] = 0
 
   filmes_add = pad.concat([filmes_carregados, pad.DataFrame([novo_filme])], ignore_index=True)
-  filmes_add.to_csv(filmes, sep=",", index=False)
+  filmes_add.to_csv(filmes_caminho, sep=",", index=False)
 
   filmes_add_estrela = pad.concat([avaliacoes_carregadas, pad.DataFrame([novo_filme_estrela])], ignore_index=True)
-  filmes_add_estrela.to_csv(avaliacoes, sep=",", index=False)
+  filmes_add_estrela.to_csv(avaliacoes_caminho, sep=",", index=False)
 
 
   print("\nFilme cadastrado com sucesso!")
@@ -61,8 +60,43 @@ def cadastrar_filme(filmes_carregados, avaliacoes_carregadas):  # Agora recebe o
   input()
 
 
-def avaliar_filme(filmes):
-  pass
+def avaliar_filme(df_filmes, df_avaliacoes):
+  filme = input("qual filme buscado?")
+
+  mascara = (df_filmes['Título'].str.lower() == filme.lower())
+
+  if not mascara.any():
+    print(f"\nERRO: O filme '{filme}' não foi encontrado no catálogo.")
+    input("[** Tecle enter para voltar ao menu **]")
+    return  df_filmes, df_avaliacoes # Encerra a função
+
+  #caso seja encontrado
+  try:
+      nota = float(input(f"filme {filme} encontrado, digite uma nota de 0 a 5 para ele:\n"))
+      if not (0 <= nota <= 5):
+        print("Nota inválida")
+        input("Tecle enter para voltar ao menu")
+        return df_filmes, df_avaliacoes
+
+  except ValueError:
+      print("Nota inváldia")
+      input("Tecle enter para voltar ao menu")
+      return df_filmes, df_avaliacoes
+
+  #salvando o progresso
+  nova_nota = {
+      "Título" : filme,
+      "Estrelas": nota,
+      "Número de avaliações" : 1
+  }
+
+  estrela_atualizada = pad.concat([df_avaliacoes, pad.DataFrame([nova_nota])], ignore_index=True)
+  estrela_atualizada.to_csv(avaliacoes_caminho, sep=",", index=False)
+  print(f"\nObrigado! A nota {nota} foi registrada para o filme '{filme}'.")
+  input("Tecle enter para retornar ao menu")
+
+  return df_filmes, estrela_atualizada
+
 
 def lista_estrelas(num, filmes):
   #solicita número mínimo de estrelas
@@ -73,21 +107,24 @@ def lista_todos(filmes):
   #mostra todos os filmes com suas respectivas informações
   pass
 
+
+df_filmes = carrega_arquivos(filmes_caminho, lista_colunas)
+df_avaliacoes = carrega_arquivos(avaliacoes_caminho, colunas_avaliacoes)
 opcao = -1
 while True:
 
   mostra_menu(opcao)
   opcao = int(input('Digite a opção: '))
   if opcao == 1:
-    df_filmes = carrega_arquivos(filmes, lista_colunas)
-    df_avaliacoes_atuais = carrega_arquivos(avaliacoes, colunas_avaliacoes)
-    cadastrar_filme(df_filmes,df_avaliacoes_atuais)
+
+    cadastrar_filme(df_filmes,df_avaliacoes)
 
   elif opcao == 2:
-    pass
+    avaliar_filme(df_filmes, df_avaliacoes)
+
 
   elif opcao == 3:
-    pass
+      pass
 
   elif opcao == 4:
     pass
