@@ -59,7 +59,6 @@ def cadastrar_filme(filmes_carregados, avaliacoes_carregadas):  # Agora recebe o
   print("\n[**Tecle enter para continuar**]")
   input()
 
-
 def avaliar_filme(df_filmes, df_avaliacoes):
   filme = input("qual filme buscado?")
 
@@ -96,6 +95,15 @@ def avaliar_filme(df_filmes, df_avaliacoes):
   input("Tecle enter para retornar ao menu")
 
   return df_filmes, estrela_atualizada
+
+def filme_titulo(busca,filme):
+  pass
+
+def filme_estrela(busca,estrela):
+  pass
+
+def lista_tudo():
+  pass
 
 
 def lista_estrelas(num, filmes):
